@@ -1,0 +1,39 @@
+Mappings:
+  AWSRegionAMI:
+    us-east-1:
+      HVM64: ami-0b898040803850657
+    ap-south-1:
+      HVM64: ami-0d2692b6acea72ee6
+    us-east-2:
+      HVM64: ami-0d8f6eb4f641ef691
+    us-west-1:
+      HVM64: ami-056ee704806822732
+    eu-west-1:
+      HVM64: ami-0bbc25e23a7640b9b
+Parameters:
+  EnvironmentName:
+    Description: Environment Name
+    Type: String
+    AllowedValues: [production, development]
+    ConstraintDescription: must be a valid production or development environment
+Conditions:
+  CreateProdResources: !Equals [ !EnvironmentName, production]
+Resources:
+  Myinstance:
+    Type: AWS::EC2::Instance
+    Properties: 
+      InstanceType: t2.micro
+      ImageId: !FindInMap [AWSRegionAMI, !Ref AWS::Region, HVM64]
+  MountPoint:
+    Type: AWS::EC2::VolumeAttachment
+    Condition: CreateProdResources
+    Properties:
+      InstanceId: !Ref Myinstance
+      VolumeId: !Ref Newvolume
+      Device: /dev/sdh
+  Newvolume:
+    Type: AWS::EC2::Volume
+    Condition: CreateProdResources
+    Properties:
+      Size: 10
+      AvailabilityZone: !GetAtt Myinstance.AvailabilityZone

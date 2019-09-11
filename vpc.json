@@ -1,0 +1,47 @@
+Resources:
+  MyVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: 'false'
+      Tags:
+      - Key: foo
+        Value: bar
+  MyPublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties: 
+      AvailabilityZone: "ap-south-1a"
+      CidrBlock: 10.0.0.0/24
+      MapPublicIpOnLaunch: 'true'
+      VpcId: !Ref MyVPC
+      Tags:
+      - Key: foo
+        Value: bar
+  MyPrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties: 
+      AvailabilityZone: "ap-south-1b"
+      CidrBlock: 10.0.1.0/24
+      MapPublicIpOnLaunch: 'false'
+      VpcId: !Ref MyVPC
+      Tags:
+      - Key: foo
+        Value: bar
+  myRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref MyVPC
+      Tags:
+      - Key: foo
+        Value: bar
+  myInternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+      - Key: foo
+        Value: bar
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment    
+    Properties:
+      VpcId: !Ref MyVPC
+      InternetGatewayId: !Ref myInternetGateway 

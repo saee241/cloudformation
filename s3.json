@@ -1,0 +1,7 @@
+---
+Resources:
+  mys3bucket:
+    Type: AWS::S3::Bucket
+    Properties: 
+      AccessControl: PublicRead
+      BucketName: modify-saee-new

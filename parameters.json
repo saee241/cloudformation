@@ -1,0 +1,41 @@
+Parameters:
+  SecurityGroupDescription:
+    Description: Security Group Description
+    Type: String
+  SecurityGroupPort:
+    Description: Security group port number, with min and max value
+    Type: Number
+    Minvalue: 22
+    Maxvalue: 65535
+  InstanceType:
+    Description: Webserver
+    Type: string
+    Default: t2.micro
+    AllowedValues:
+      - t2.micro
+      - t2.small
+      - t2.large
+      - t2.nano
+    ConstraintDescription: valid EC2 instance
+  KeyName:
+    Description: Name the existing EC@ keypair
+    type: AWS::EC2::KeyPair::KeyName
+    ContainerDescription: must be the name of the existing EC2 KeyPair
+  DBPwd:
+    NoEcho: true
+    Description: the database account password
+    Type: String
+  SecurityGroupIngressCIDR:
+    Description: The IP address range that can communicate to the EC2 instance
+    Type: String
+    MinLength: '9'
+    MaxLength: '18'
+    Default: 0.0.0.0/0
+    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
+    ConstraintDescription: Must be a valid IP CIDR range
+  MyVPC:
+    Description: VPC to operate in
+    Type: AWS::EC2::VPC::ID
+  MySubnetIDs:
+    Description: Subnet IDs that is a list of subnet Id
+    
